@@ -1,0 +1,29 @@
+// receive an infinite mapping and fallback to TCP
+// as per RFC8684 § 3.7
+
+--tolerance_usecs=100000
+`../common/defaults.sh`
+
+
++0    socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
++0    setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+
++0    bind(3, ..., ...) = 0
++0    listen(3, 1) = 0
++0      < S 0:0(0) win 32792 <mss 1460,sackOK,nop,nop,nop,wscale 7,mpcapable v1 flags[flag_h] nokey>
++0      > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8,mpcapable v1 flags[flag_h] key[skey] >
++0.01   < . 1:1(0) ack 1 win 257 <mpcapable v1 flags[flag_h] key[ckey=2,skey]>
++0    accept(3, ..., ...) = 4
+
+// read and ack 1 data segment (100B)
++0.1    < P. 1:101(100) ack 1 win 225 <dss dack8=1 dsn8=1 dll=0 nocs, nop, nop>
++0      > .  1:1(0) ack 101
+0.3   read(4, ..., 100) = 100
+
+// write and receive ack for 1 data segment (200B)
++0.01 write(4, ..., 200) = 200
++0.01   > P. 1:201(200) ack 101
++0.01   < . 101:101(0) ack 201 win 256
+
++0.1  close(4) = 0
++0      > F. 201:201(0) ack 101
