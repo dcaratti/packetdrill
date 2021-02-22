@@ -1879,17 +1879,20 @@ static struct endpoint *find_next_addr_inbound(struct packet *live_packet, struc
 	   add_addr_live->length == TCPOLEN_ADD_ADDR_V4_HMAC ||
 	   add_addr_live->length == TCPOLEN_ADD_ADDR_V6 ||
 	   add_addr_live->length == TCPOLEN_ADD_ADDR_V6_HMAC){
-		endpoint->port = htons(subflow->src_port);
+		endpoint->port = add_addr_script->data.add_addr.flag_E ?
+			htons(subflow->dst_port) : htons(subflow->src_port);
 	}else if(add_addr_live->length == TCPOLEN_ADD_ADDR_V4_PORT ||
 		 add_addr_live->length == TCPOLEN_ADD_ADDR_V4_PORT_HMAC){
 		if(add_addr_script->data.add_addr.ipv4_w_port.port == UNDEFINED)
-			endpoint->port = htons(subflow->src_port);
+			endpoint->port = add_addr_script->data.add_addr.flag_E ?
+				htons(subflow->dst_port): htons(subflow->src_port);
 		else
 			endpoint->port = add_addr_script->data.add_addr.ipv4_w_port.port;
 	}else if(add_addr_live->length == TCPOLEN_ADD_ADDR_V6_PORT ||
 		 add_addr_live->length == TCPOLEN_ADD_ADDR_V6_PORT_HMAC){
 		if(add_addr_script->data.add_addr.ipv6_w_port.port == UNDEFINED)
-			endpoint->port = htons(subflow->src_port);
+			endpoint->port = add_addr_script->data.add_addr.flag_E ?
+			      htons(subflow->dst_port) : htons(subflow->src_port);
 		else
 			endpoint->port = add_addr_script->data.add_addr.ipv6_w_port.port;
 	}
@@ -1957,6 +1960,9 @@ int mptcp_subtype_add_address(struct packet *packet_to_modify,
 			for(addr = mp_state.packetdrill_addrs; addr; addr = addr->next)
 				if(is_equal_ip(&addr->ip, &endpoint->ip))
 					break;
+			if (!addr)
+				return STATUS_ERR;
+
 			add_addr_live->data.add_addr.address_id = addr->addr_id;
 		}
 
