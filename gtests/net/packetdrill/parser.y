@@ -851,7 +851,7 @@ struct tcp_option *dss_do_dsn_dack( int dack_type, int dack_val,
 %token <reserved> DSS DACK4 DSN4 DACK8 DSN8 FIN SSN DLL NOCS CKSUM ADDR ADDRESS_ID BACKUP TOKEN AUTO RAND
 %token <reserved> TRUNC_R64_HMAC TRUNC_R64_HMAC_SHA1 TRUNC_R64_HMAC_SHA256
 %token <reserved> SENDER_HMAC TRUNC_L64_HMAC FULL_160_HMAC SHA1_32 SHA256_32 ADD_ADDR_HMAC
-%token <reserved> ADD_ADDRESS ADD_ADDR_IPV4 ADD_ADDR_IPV6 PORT MP_FAIL
+%token <reserved> ADD_ADDRESS ADD_ADDR_IPV4 ADD_ADDR_IPV6 PORT MP_FAIL ADDR_ECHO
 %token <reserved> REMOVE_ADDRESS ADDRESSES_ID LIST_ID
 %token <reserved> MP_PRIO
 %token <reserved> TOS FLAGS FLOWLABEL
@@ -1950,7 +1950,8 @@ SENDER_HMAC '=' TRUNC_L64_HMAC '(' INTEGER ')' {
 ;
 
 add_addr_hmac
-: {
+:
+ADDR_ECHO {
         $$.auto_conf = false;
         $$.hash = UNDEFINED;
 }

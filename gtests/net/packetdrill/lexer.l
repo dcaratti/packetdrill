@@ -253,6 +253,7 @@ backup			return BACKUP;
 mp_join_syn_ack	return MP_JOIN_SYN_ACK;
 mp_join_ack		return MP_JOIN_ACK;
 add_address		return ADD_ADDRESS;
+addr_echo		return ADDR_ECHO;
 port			return PORT;
 add_addr_ipv4	return ADD_ADDR_IPV4;
 add_addr_ipv6	return ADD_ADDR_IPV6;

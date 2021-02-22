@@ -4,7 +4,7 @@
 
 // TODO(malsbat):
 +0     `ip mptcp endpoint flush`
-+0     `ip mptcp endpoint add 192.168.122.83 signal`
++0     `ip mptcp endpoint add 198.51.100.2 signal`
 
 +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
 +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
@@ -17,9 +17,8 @@
 +0     accept(3, ..., ...) = 4
 
 // ADD_ADDR is sent directly (>= 5.12), not after first data (< 5.12)
-+0       >   .  1:1(0)        ack 1              <add_address addr[saddr] hmac=auto, dss dack4=1           ssn=1 dll=0 nocs>
-// TODO: support injecting ADD_ADDR echo
-//+0     <   .  1:1(0)        ack 1     win 257  <add_address addr[saddr],           dss dack8=1           ssn=1 dll=0 nocs>
++0       >   .  1:1(0)        ack 1              <add_address address_id=1 addr[ep=inet_addr("198.51.100.2")] hmac=auto, dss dack4=1 ssn=1 dll=0 nocs>
++0       <   .  1:1(0)        ack 1     win 257  <add_address address_id=1 addr[ep=inet_addr("198.51.100.2")] addr_echo,      dss dack8=1 ssn=1 dll=0 nocs>
 
 // read and ack 1 data segment
 +1.0     <  P.  1:1001(1000)  ack 1     win 450  <nop, nop,                          dss dack8=1    dsn8=1 ssn=1 dll=1000 nocs>

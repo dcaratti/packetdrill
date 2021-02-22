@@ -30,8 +30,7 @@
 +0.0     <                                .  1:1(0)           ack 1      win 256                             <mp_join_ack                  sender_hmac=auto>
 
 +0.0     >                                .  1:1(0)           ack 1                 <add_address addr[saddr1] hmac=auto, dss dack8=1001 nocs>
-// TODO: send echo bit
-// +0.0  <                                .  1:1(0)           ack 1      win 256    <add_address addr[saddr1],           dss dack8=1    nocs>
++0.0     <                                .  1:1(0)           ack 1      win 256    <add_address addr[saddr1] addr_echo, dss dack8=1    nocs>
 
 // more data, resend.  should work now.
 +0.0     <                               P.  1:1001(1000)     ack 1      win 450    <nop, nop,                           dss dack8=1    dsn8=1001 ssn=1    dll=1000 nocs>
